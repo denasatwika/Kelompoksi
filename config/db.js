@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-var cachet = global.mongoose
+var cached = global.mongoose
 
 if (!cached) {
     cached = global.mongoose = { conn: null, promise: null }
