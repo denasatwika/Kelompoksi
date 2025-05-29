@@ -8,6 +8,7 @@ import { useClerk, UserButton } from "@clerk/nextjs";
 import { useUser, SignOutButton } from "@clerk/nextjs";
 
 
+
 const Navbar = () => {
 
   const { isSeller, router, user } = useAppContext();
@@ -41,37 +42,55 @@ const Navbar = () => {
 
       </div>
 
-      <ul className="hidden md:flex items-center gap-4 ">
-        <Image className="w-4 h-4" src={assets.search_icon} alt="search icon" />
-        <button
-          onClick={() => router.push("/cart")}
-          className="flex items-center gap-2 text-sm hover:text-orange-600"
-          >
-          <CartIcon className="w-4 h-4" />
-          Cart
-        </button>
-        <button
-          onClick={() => router.push("/my-orders")}
-          className="flex items-center gap-2 text-sm hover:text-orange-600"
-          >
-          <BagIcon className="w-4 h-4" />
-          My Loan
-        </button>
-        { 
-          user 
-          ? <>
-          <UserButton>
-            <UserButton.MenuItems>
-              <UserButton.Action label="Cart" LabelIcon={ <CartIcon /> } onClick={()=> router.push('/cart')} />
-            </UserButton.MenuItems>
-          </UserButton> 
-          </> 
-          : <button onClick={openSignIn} className="flex items-center gap-2 hover:text-gray-900 transition">
-            <Image src={assets.user_icon} alt="user icon" />
-            Account
-          </button> 
-        }
+      <ul className="flex items-center gap-6">
+          <li>
+          <button className="hover:text-gray-600">
+            <Image className="w-4 h-4" src={assets.search_icon} alt="search icon" />
+          </button>
+        </li>
+        <li>
+          <button onClick={() => router.push("/cart")} className="flex items-center gap-1 hover:text-gray-600">
+            <CartIcon className="w-5 h-5" />
+            <span className="hidden md:inline">Cart</span>
+          </button>
+        </li>
+
+        {user && (
+          <>
+            <li>
+              <button onClick={() => router.push("/my-orders")} className="flex items-center gap-1 hover:text-gray-600">
+                <BagIcon className="w-5 h-5" />
+                <span className="hidden md:inline">My Loan</span>
+              </button>
+            </li>
+
+            {/* {isSeller && (
+              <li>
+                <button onClick={() => router.push("/seller")} className="flex items-center gap-1 border px-3 py-1 rounded-full text-sm hover:bg-gray-100">
+                  Seller Dashboard
+                </button>
+              </li>
+            )} */}
+
+            <li>
+              <UserButton afterSignOutUrl="/" userProfileMode="navigation" />
+            </li>
+          </>
+        )}
+
+        {!user && (
+          <li>
+                <button
+                  onClick={openSignIn}
+                  className="flex items-center gap-2 hover:text-gray-900 transition"
+                >
+                  <Image src={assets.user_icon} alt="user icon" />
+                  Account
+                </button>
+          </li>
+        )}
       </ul>
+        
 
 {/* untuk mobile */}
       <div className="flex items-center md:hidden gap-3">
